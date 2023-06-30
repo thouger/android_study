@@ -1,0 +1,352 @@
+--------- beginning of kernel
+--------- beginning of system
+--------- beginning of main
+target class: android.os.SystemProperties
+target method: access$100
+target method: access$200
+target method: access$300
+target method: access$400
+target method: addChangeCallback
+target method: callChangeCallbacks
+target method: digestOf
+target method: find
+target method: get
+target method: get
+target method: getBoolean
+target method: getInt
+target method: getLong
+target method: native_add_change_callback
+target method: native_find
+target method: native_get
+find method: native_get
+target method: native_get
+find method: native_get
+target method: native_get
+find method: native_get
+target method: native_get_boolean
+target method: native_get_boolean
+target method: native_get_int
+target method: native_get_int
+target method: native_get_long
+target method: native_get_long
+target method: native_report_sysprop_change
+target method: native_set
+target method: onKeyAccess
+target method: removeChangeCallback
+target method: reportSyspropChanged
+target method: set
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.gfx.driver.0
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.gfx.driver.0
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.gfx.driver.1
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.gfx.driver.1
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.second-display.pkg
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.second-display.pkg
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.force_rtl
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: false
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.debuggable
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 1
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.debuggable
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 1
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: arm64-v8a
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: arm64-v8a
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi2
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi2
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.arch
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.arch
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.id
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: RQ3A.211001.001
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.id
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: RQ3A.211001.001
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.display.id
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: lineage_sailfish-userdebug 11 RQ3A.211001.001 c63bc47bc3
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.display.id
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: lineage_sailfish-userdebug 11 RQ3A.211001.001 c63bc47bc3
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.release
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 11
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.release
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 11
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.sdk
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 30
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.sdk
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 30
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.codename
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: REL
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.codename
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: REL
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.incremental
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: c63bc47bc3
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.version.incremental
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: c63bc47bc3
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.type
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: userdebug
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.type
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: userdebug
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.tags
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: release-keys
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.tags
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: release-keys
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.fingerprint
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: google/sailfish/sailfish:10/QP1A.191005.007.A3/5972272:user/release-keys
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.fingerprint
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: google/sailfish/sailfish:10/QP1A.191005.007.A3/5972272:user/release-keys
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.characteristics
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: nosdcard
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.characteristics
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: nosdcard
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.model
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Pixel
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.model
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Pixel
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.brand
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: google
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.brand
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: google
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.name
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: sailfish
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.name
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: sailfish
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.device
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: sailfish
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.device
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: sailfish
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.board
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: sailfish
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.board
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: sailfish
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.manufacturer
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Google
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.manufacturer
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Google
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.locale.language
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.locale.language
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.locale.region
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.locale.region
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.timezone
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Asia/Shanghai
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.timezone
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Asia/Shanghai
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.language
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.language
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.country
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.country
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.localevar
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：persist.sys.localevar
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.date.utc
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 1679616744
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.date.utc
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 1679616744
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.date
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Fri Mar 24 00:12:24 UTC 2023
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.date
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: Fri Mar 24 00:12:24 UTC 2023
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.user
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: root
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.user
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: root
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.host
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 6438cc363e9d
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.host
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 6438cc363e9d
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.build_display_id
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.build_display_id
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: arm64-v8a
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: arm64-v8a
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi2
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.abi2
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.arch
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.product.cpu.arch
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.display.id
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: lineage_sailfish-userdebug 11 RQ3A.211001.001 c63bc47bc3
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.build.display.id
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: lineage_sailfish-userdebug 11 RQ3A.211001.001 c63bc47bc3
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.debuggable
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 1
+类名：android.os.SystemProperties,方法名：native_get 参数0：ro.debuggable
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 1
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.layout
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.layout
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get done
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.layout
+类名：android.os.SystemProperties,方法名：native_get 参数1：
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
+类名：android.os.SystemProperties,方法名：native_get 参数0：debug.layout
+类名：android.os.SystemProperties,方法名：native_get afterHookedMethod result: 
