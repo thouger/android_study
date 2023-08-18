@@ -166,6 +166,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
     }
 
     SandHook::ElfImg art("libart.so");
+
     lsplant::InitInfo initInfo {
         .inline_hooker = inlineHooker,
         .inline_unhooker = inlineUnHooker,
