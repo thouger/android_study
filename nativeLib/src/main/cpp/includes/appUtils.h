@@ -30,7 +30,7 @@
 #include "mapItemInfo.h"
 
 #include "ZhenxiLogging.h"
-#include "AllInclude.h"
+#include "allInclude.h"
 #include "ZhenxiLog.h"
 #include "mapItemInfo.h"
 

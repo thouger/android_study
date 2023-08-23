@@ -42,7 +42,7 @@
 #include <asm/fcntl.h>
 #include <fcntl.h>
 
-#include "AllInclude.h"
+#include "allInclude.h"
 #include "libpath.h"
 #include "ZhenxiLogging.h"
 #include "HookUtils.h"

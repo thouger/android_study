@@ -6,3 +6,5 @@
 6. 内存漫游
 7. native层hook所有jni方法
 8. syscall获取mac地址
+9. ptrace+seccomp拦截syscall的重定向
+10. seccomp拦截syscall的例子（没有ptrace）

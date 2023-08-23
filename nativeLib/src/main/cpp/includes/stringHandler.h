@@ -7,7 +7,7 @@
 
 #include "dlfcn_compat.h"
 #include "libpath.h"
-#include "AllInclude.h"
+#include "allInclude.h"
 
 
 

@@ -70,8 +70,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
-
-    implementation(project(":nativelib"))
+    implementation(project(":nativeLib"))
 
 
     implementation(libs.core.ktx)

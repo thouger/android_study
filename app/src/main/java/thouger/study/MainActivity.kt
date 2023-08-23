@@ -56,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         checkAndRequestLocationPermissions()
 
         //测试native层
-//        System.loadLibrary("hello")
-//        System.loadLibrary("mynative64");
+        System.loadLibrary("hunter64");
 //
 //
 //        val list = ArrayList<String>()
@@ -77,11 +76,10 @@ class MainActivity : AppCompatActivity() {
 //        Timber.d("sum: $sum")
 
         //指纹输出与保存
-        val device_info = DeviceInfoUtils()
-        val map = device_info.printALL(this,"appsfly_map")
-        val fileName = "appsfly_map.json-"+System.currentTimeMillis()
-        fileUtils().saveFile(this, fileName, map)
-
+//        val device_info = DeviceInfoUtils()
+//        val map = device_info.printALL(this,"appsfly_map")
+//        val fileName = "appsfly_map.json-"+System.currentTimeMillis()
+//        fileUtils().saveFile(this, fileName, map)
 
 
 //        val DetectVirtualAppsResult = DetectVirtualApps().isRunningInVirtualApp()
@@ -94,7 +92,12 @@ class MainActivity : AppCompatActivity() {
 
         //内存漫游
 //        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
+
+        SeccompSVC()
     }
+
+    external fun SeccompSVC()
+    external fun Analysis(list: ArrayList<*>?, path: String?)
 
     external fun listmacaddrs(): String
 
@@ -103,7 +106,6 @@ class MainActivity : AppCompatActivity() {
     external fun stringFromJNI(): String
 
     external fun sumArray(array: IntArray?): Int
-    external fun Analysis(list: ArrayList<*>?, path: String?)
 
     external fun copyString(str: String?): String?
 

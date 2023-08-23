@@ -36,6 +36,8 @@ add_library(
         netlink/ifaddrs.cpp
 #        hook/xhook/xhook.c
 
+        SeccompSVC/library.cpp
+
         ${syscall}
 )
 

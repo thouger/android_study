@@ -8,7 +8,7 @@
 
 
 #include <cstdio>
-#include "AllInclude.h"
+#include "allInclude.h"
 
 class fileUtils {
 public:

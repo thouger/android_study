@@ -8,7 +8,7 @@ pluginManagement {
 
 
 rootProject.name = "thouger"
-include(":app", ":nativelib")
+include(":app", ":nativeLib")
 include(":hook")
 include(":nativelib")
 include(":lsposed")

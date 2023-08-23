@@ -3,6 +3,8 @@
 //
 
 #include "hunter.h"
+#include <jni.h>
+#include "SeccompSVC/library.h"
 
 void NativeAnalysis(JNIEnv *env, jobject type,jobject filterList,jstring filepath) {
   const auto &clist = parse::jlist2clist(env, filterList);
@@ -48,9 +50,6 @@ Java_thouger_study_hunter_XposedBridge_unhook0(JNIEnv *env, jclass clazz, jobjec
   return lsplant::UnHook(env, originalMethod);
 }
 
-static JNINativeMethod HunterRuntimeNativeMethods[] = {
-    {"Analysis", "(Ljava/util/ArrayList;Ljava/lang/String;)V", (void *) NativeAnalysis},
-};
 void *inlineHooker(void *targetFunc, void *replaceFunc) {
   auto pageSize = sysconf(_SC_PAGE_SIZE);
   auto funcAddress = ((uintptr_t) targetFunc) & (-pageSize);
@@ -142,6 +141,16 @@ void hookProperties() {
 //  addr = libc.getSymbAddress("_ZN16SystemProperties4FindEPKc");
 //  orig_system_property_find = (const prop_info* (*)(const char *, const char *)) inlineHooker(addr, reinterpret_cast<void*>(system_property_find));
 }
+
+void NativeSeccompSVC(JNIEnv *env, jobject type) {
+  LOGD("SeccompSVC hook start");
+  InitCvmSeccomp();
+}
+
+static JNINativeMethod HunterRuntimeNativeMethods[] = {
+        {"Analysis", "(Ljava/util/ArrayList;Ljava/lang/String;)V", (void *) NativeAnalysis},
+        {"SeccompSVC", "()V", (void *) NativeSeccompSVC},
+};
 
 jclass NativiEngineClazz;
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
