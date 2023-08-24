@@ -5,6 +5,7 @@
 #include "hunter.h"
 #include <jni.h>
 #include "SeccompSVC/library.h"
+#include "mylibc.h"
 
 void NativeAnalysis(JNIEnv *env, jobject type,jobject filterList,jstring filepath) {
   const auto &clist = parse::jlist2clist(env, filterList);
@@ -118,6 +119,12 @@ std::string GetProperty(const std::string& key, const std::string& default_value
   return property_value;
 }
 
+void (*orig_openat)(const char *path, int oflag, ...);
+void new_openat(const char *path, int oflag, ...) {
+  LOGD("success open %s", path);
+    orig_openat(path, oflag);
+}
+
 void hookProperties() {
 //  xhook_enable_debug(1);
 //  int result = xhook_register("libandroid_runtime.so", "_ZN7android4base11GetPropertyERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES9_",
@@ -127,8 +134,16 @@ void hookProperties() {
 //  }
 //  xhook_refresh(0);
 
-  hook_function_xhook("libandroid_runtime.so", "_ZN7android4base11GetPropertyERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES9_",
-                              (void*) GetProperty, (void **) &orig_GetProperty);
+    xhook_enable_debug(1);
+    int result = xhook_register("libc.so","open",(void*) new_openat, (void **) &orig_openat);
+    if (result != 0) {
+        LOGE("android::base::GetProperty failed %d", result);
+    }
+    xhook_refresh(0);
+    openat(0,"/data/local/tmp/test.txt",O_RDONLY,0);
+  //无限重启，不懂
+//  hook_function_xhook("libandroid_runtime.so", "_ZN7android4base11GetPropertyERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES9_",
+//                              (void*) GetProperty, (void **) &orig_GetProperty);
 
 //  SandHook::ElfImg libc("libc.so");
 //  void* addr = libc.getSymbAddress("_ZN16SystemProperties3GetEPKcPc");
@@ -147,13 +162,18 @@ void NativeSeccompSVC(JNIEnv *env, jobject type) {
   InitCvmSeccomp();
 }
 
+void test(JNIEnv *env, jobject type) {
+}
+
 static JNINativeMethod HunterRuntimeNativeMethods[] = {
         {"Analysis", "(Ljava/util/ArrayList;Ljava/lang/String;)V", (void *) NativeAnalysis},
         {"SeccompSVC", "()V", (void *) NativeSeccompSVC},
+        {"test", "()V", (void *) test}
 };
 
 jclass NativiEngineClazz;
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
+    hookProperties();
 
   char value[PROP_VALUE_MAX];
   __system_property_get("ro.product.model", value);

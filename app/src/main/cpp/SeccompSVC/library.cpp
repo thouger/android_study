@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <linux/prctl.h>
 #include <sys/prctl.h>
+#include <asm-generic/fcntl.h>
+#include <linux/fcntl.h>
+#include <fcntl.h>
 
 #define SECMAGIC 0xE8D4A50FFF
 #define TAG "CvmSeccomp"
@@ -67,7 +70,6 @@ void sig_handler(int signo, siginfo_t *info, void *data) {
             break;
         }
     }
-
 }
 
 extern "C" void InitCvmSeccomp() {

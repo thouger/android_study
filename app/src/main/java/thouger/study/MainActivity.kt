@@ -94,10 +94,12 @@ class MainActivity : AppCompatActivity() {
 //        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
 
         SeccompSVC()
+        test()
     }
 
     external fun SeccompSVC()
     external fun Analysis(list: ArrayList<*>?, path: String?)
+    external fun test()
 
     external fun listmacaddrs(): String
 
