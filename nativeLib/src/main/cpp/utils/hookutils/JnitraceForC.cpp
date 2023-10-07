@@ -1158,7 +1158,7 @@ void Jnitrace::init(JNIEnv *env) {
 
 void Jnitrace::startjnitrace(JNIEnv *env, const std::list<string> &filter_list, std::ofstream *os) {
     filterSoList = filter_list;
-    LOGD("startjnitrace filterSoList size %lu,ofstream %p", filterSoList.size(), os);
+    _LOGD("startjnitrace filterSoList size %lu,ofstream %p", filterSoList.size(), os);
     if (os != nullptr) {
         isSave = true;
         jnitraceOs = os;

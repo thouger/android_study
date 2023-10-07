@@ -47,12 +47,10 @@
 #include <asm/unistd.h>
 #include <unistd.h>
 #include <asm/fcntl.h>
-#include "limits.h"
 #include <string.h>
 #include <cerrno>
 #include <cstring>
 #include <climits>
-#include "syscall.h"
 #include <cstring>
 #include <cstdio>
 #include <unistd.h>
@@ -93,6 +91,8 @@
 #include <fcntl.h>
 #include <fstream>
 
+#include "syscall.h"
+#include "limits.h"
 #include "includes/ZhenxiLogging.h"
 
 using namespace std;

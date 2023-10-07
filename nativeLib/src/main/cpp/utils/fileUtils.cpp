@@ -14,7 +14,7 @@ using namespace std;
  */
 string fileUtils::get_file_name(int fd, pid_t pid) {
     if (fd <= 0) {
-        LOGE("fileUtils get_file_name error fd == 0  -> %d ", fd);
+        _LOGE("fileUtils get_file_name error fd == 0  -> %d ", fd);
         return {};
     }
     const char *path = string("/proc/").append(to_string(pid))
@@ -23,7 +23,7 @@ string fileUtils::get_file_name(int fd, pid_t pid) {
     if (readlink(path, file_path, sizeof(file_path) - 1) != -1) {
         return {file_path};
     }
-    LOGE("fileUtils get_file_name not found fd %d path  %s ", fd, strerror(errno));
+    _LOGE("fileUtils get_file_name not found fd %d path  %s ", fd, strerror(errno));
     return {};
 }
 
@@ -65,7 +65,7 @@ int fileUtils::makeDir(const char *path) {
             currentPath[i] = '\0';
             if (access(currentPath, NULL) != 0) {
                 if (mkdir(currentPath, 0755) == -1) {
-                    LOGE("fileUtils mkdir error ,currentPath -> %s  %s ", currentPath,
+                    _LOGE("fileUtils mkdir error ,currentPath -> %s  %s ", currentPath,
                          strerror(errno));
                     return -1;
                 }
@@ -82,7 +82,7 @@ string fileUtils::readText(string file) {
     infile.open(file.data());   //将文件流对象与文件连接起来
     if (!infile.is_open()) {
         //若失败,则输出错误消息,并终止程序运行
-        LOGE("fileUtils read text open file error %s ", file.c_str());
+        _LOGE("fileUtils read text open file error %s ", file.c_str());
         return "";
     }
 
@@ -121,22 +121,22 @@ void fileUtils::writeText(string file, const string& str, bool isAppend) {
 
 bool fileUtils::savefile(const char *savePath, size_t size, size_t start, bool isDele) {
     if (size == 0) {
-        LOGE("savefile size == 0  ")
+        _LOGE("savefile size == 0  ")
         return false;
     }
     if (savePath == nullptr) {
-        LOGE("filePath == nullptr ")
+        _LOGE("filePath == nullptr ")
         return false;
     }
     char *path = strdup(savePath);
     char *filepath = dirname(path);
-    LOGI("fileUtils::savefile upper path -> %s ", filepath)
+    _LOGI("fileUtils::savefile upper path -> %s ", filepath)
     if (access(filepath, 0) == -1) {
-        LOGI("fileUtils::savefile not found upper path ,start create  %s", filepath)
+        _LOGI("fileUtils::savefile not found upper path ,start create  %s", filepath)
         //如果父文件夹不存在递归创建多级
         int createret = fileUtils::makeDir(filepath);
         if (createret == -1) {
-            LOGE("fileUtils::savefile create upper path error  -> %s  %s ", filepath,
+            _LOGE("fileUtils::savefile create upper path error  -> %s  %s ", filepath,
                  strerror(errno))
             return false;
         }
@@ -151,12 +151,12 @@ bool fileUtils::savefile(const char *savePath, size_t size, size_t start, bool i
         file = fopen(savePath, "wt+");
     }
     if (file == nullptr) {
-        LOGE("savefile fopen == null %s  ", strerror(errno))
+        _LOGE("savefile fopen == null %s  ", strerror(errno))
         return false;
     }
     fseek(file, 0, SEEK_SET);
 
-    LOGI("fileUtils::savefile save path -> start address ->0x%x  file end address -> 0x%x ", start,
+    _LOGI("fileUtils::savefile save path -> start address ->0x%x  file end address -> 0x%x ", start,
          (start + size))
     //有的SO的内存段是不可读不可写,必须RWX 只R不行
     MPROTECT(start, size, MEMORY_RWX);
@@ -167,7 +167,7 @@ bool fileUtils::savefile(const char *savePath, size_t size, size_t start, bool i
     if (path != nullptr) {
         free(path);
     }
-    LOGI("fileUtils::savefile sucess ! save size %s  %zu fwrite size -> %lu ", path, size,
+    _LOGI("fileUtils::savefile sucess ! save size %s  %zu fwrite size -> %lu ", path, size,
          wirtesize)
     return true;
 }
@@ -182,7 +182,7 @@ int fileUtils::copy_file(const char *SourceFile, const char *TargetFile) {
         in.open(SourceFile, std::ios::binary);
         // 打开源文件失败
         if (in.fail()) {
-            LOGE("fileUtils::Fail to open the source file %s", SourceFile)
+            _LOGE("fileUtils::Fail to open the source file %s", SourceFile)
             //std::cout << "Error 1: Fail to open the source file." << std::endl;
             // 关闭文件对象
             in.close();
@@ -192,7 +192,7 @@ int fileUtils::copy_file(const char *SourceFile, const char *TargetFile) {
         out.open(TargetFile, std::ios::binary);
         if (out.fail()) {
             //std::cout << "Error 2: Fail to create the new file." << std::endl;
-            LOGE("fileUtils::Fail to create the new file %s", SourceFile)
+            _LOGE("fileUtils::Fail to create the new file %s", SourceFile)
             in.close();
             out.close();
             return 0;
@@ -203,7 +203,7 @@ int fileUtils::copy_file(const char *SourceFile, const char *TargetFile) {
             return 1;
         }
     } catch (std::exception &E) {
-        LOGE("fileUtils::copy_file error %s ", E.what())
+        _LOGE("fileUtils::copy_file error %s ", E.what())
 //        std::cout << E.what() << std::endl;
         return 1;
     }

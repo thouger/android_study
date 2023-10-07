@@ -7,4 +7,7 @@
 7. native层hook所有jni方法
 8. syscall获取mac地址
 9. ptrace+seccomp拦截syscall的重定向
-10. seccomp拦截syscall的例子（没有ptrace）
+10. seccomp拦截syscall的例子
+11. 隐藏maps
+12. 增加一个binder代理的例子
+13. 增加一个调用dobby.so的例子

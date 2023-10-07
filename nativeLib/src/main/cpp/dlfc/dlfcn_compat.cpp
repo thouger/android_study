@@ -60,14 +60,14 @@ void* getSymByELF(const char * filename, const char *symbol){
         //LOGI("get debug symbol sucess! ")
         return pSymbol;
     } else{
-        LOGE("get debug symbol fail ! %s %s ",filename,symbol)
+        _LOGE("get debug symbol fail ! %s %s ",filename,symbol)
         return nullptr;
     }
 }
 void* getSymCompat(const char * filename, const char *symbol){
     void *phandle = dlopen_compat(filename, RTLD_NOW);
     if(phandle==nullptr){
-        LOGE("getSymCompat get handle error  %s \n %s ",filename,symbol)
+        _LOGE("getSymCompat get handle error  %s \n %s ",filename,symbol)
         return nullptr;
     }
 
@@ -75,11 +75,7 @@ void* getSymCompat(const char * filename, const char *symbol){
     if(pSymbol!=nullptr){
         return pSymbol;
     }else{
-        LOGE("getSymCompat get sym error , start get debug symbol  %s ",symbol)
+        _LOGE("getSymCompat get sym error , start get debug symbol  %s ",symbol)
     }
     return getSymByELF(filename,symbol);
 }
-
-
-
-

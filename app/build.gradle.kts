@@ -10,6 +10,7 @@ android {
     defaultConfig {
         applicationId = "thouger.study"
         minSdk = 29
+        //noinspection ExpiredTargetSdkVersion
         targetSdk = 29
         versionCode = 1
         versionName = "1.0"
@@ -21,7 +22,7 @@ android {
             }
         }
         ndk {
-            abiFilters.add("armeabi-v7a")
+//            abiFilters.add("armeabi-v7a")
             abiFilters.add("arm64-v8a")
 //            abiFilters.add("x86")
 //            abiFilters.add("x86_64")

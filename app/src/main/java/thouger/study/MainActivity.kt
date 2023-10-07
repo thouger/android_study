@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,11 @@ import thouger.study.utils.FileUtils
 import thouger.study.utils.GsonUtils.obj2str
 import thouger.study.utils.ThreadUtils
 import timber.log.Timber
+import java.io.BufferedReader
+import java.io.DataOutputStream
 import java.io.File
+import java.io.FileReader
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,35 +34,58 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.BLUETOOTH,
+        Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
     )
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //测试重定向
+        try {
+            // 打开文件并创建 BufferedReader 对象
+            val reader = BufferedReader(FileReader("/proc/meminfo"))
+
+            // 逐行读取文件内容并打印
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                line?.let { Log.d("111111", it) }
+            }
+
+            // 关闭文件
+            reader.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        //thouger test
+        val activityThreadClass = Class.forName("android.app.ActivityThread")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         Timber.plant(Timber.DebugTree())
 
+        System.loadLibrary("dobby")
+
         //输出.so 目录的路径
-//        val soPath = applicationInfo.nativeLibraryDir
-//        Log.d("NativeLibs", "Native libs path: $soPath")
-//        val dir = File(soPath)
-//        if (dir.isDirectory) {
-//            val files = dir.listFiles()
-//            Log.d("NativeLibs", "Files count: " + files!!.size)
-//            for (file in files) {
-//                if (file.isFile) {
-//                    Log.d("NativeLibs", "File name: " + file.name)
-//                }
-//            }
-//        }
+        val soPath = applicationInfo.nativeLibraryDir
+        Log.d("NativeLibs", "Native libs path: $soPath")
+        val dir = File(soPath)
+        if (dir.isDirectory) {
+            val files = dir.listFiles()
+            Log.d("NativeLibs", "Files count: " + files!!.size)
+            for (file in files) {
+                if (file.isFile) {
+                    Log.d("NativeLibs", "File name: " + file.name)
+                }
+            }
+        }
 
 //        Timber.d("检测授权")
         checkAndRequestLocationPermissions()
 
         //测试native层
-        System.loadLibrary("hunter64");
-//
+        System.loadLibrary("hunter64")
 //
 //        val list = ArrayList<String>()
 //        list.add("hello.so")
@@ -76,8 +104,8 @@ class MainActivity : AppCompatActivity() {
 //        Timber.d("sum: $sum")
 
         //指纹输出与保存
-//        val device_info = DeviceInfoUtils()
-//        val map = device_info.printALL(this,"appsfly_map")
+        val device_info = DeviceInfoUtils()
+        val map = device_info.printALL(this,"appsfly_map")
 //        val fileName = "appsfly_map.json-"+System.currentTimeMillis()
 //        fileUtils().saveFile(this, fileName, map)
 
@@ -92,6 +120,9 @@ class MainActivity : AppCompatActivity() {
 
         //内存漫游
 //        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
+
+
+//        test_read_file()
 
         SeccompSVC()
         test()
@@ -115,6 +146,37 @@ class MainActivity : AppCompatActivity() {
         Timber.d("testttttttttttt: $str")
     }
 
+    fun test_read_file() {
+        //查看/default.prop文件内容并且打印
+        try {
+            val filePath = "/default.prop" // 修改为您要读取的文件路径
+            val file = File(filePath)
+
+            if (file.exists()) {
+                val bufferedReader = file.bufferedReader()
+                val content = bufferedReader.use { it.readText() }
+                Timber.d("File content:\n$content")
+            } else {
+                Timber.d("File not found: $filePath")
+            }
+        }catch (e: Exception) {
+            Timber.d("result: File not found: $e")
+        }
+
+        val process = Runtime.getRuntime().exec("usa")
+        val outputStream = DataOutputStream(process.outputStream)
+        outputStream.writeBytes("cat /default.prop\n")
+        outputStream.flush()
+        outputStream.writeBytes("exit\n")
+        outputStream.flush()
+        process.waitFor()
+        val inputStream = process.inputStream
+        val buffer = ByteArray(inputStream.available())
+        inputStream.read(buffer)
+        val result = String(buffer)
+        Timber.d("result: $result")
+    }
+
     /**
      * 获取内存全部对象的内存信息,并且保存
      * 主要用于分析内存结构，确定什么对象保存了设备指纹等关键字段
@@ -126,7 +188,7 @@ class MainActivity : AppCompatActivity() {
         Timber.d("start get all object !!!")
         //优先保存主进程
         ThreadUtils.runOnMainThread({
-            //ArrayList<Object> choose = ChooseUtils.choose(String.class, true);
+            //ArrayList<Object> choose = ChooseUtils.choose(String.class, true)
             val choose = ChooseUtils.choose(Any::class.java, true)
             val size = choose!!.size
             Timber.d("all count size ->  $size")

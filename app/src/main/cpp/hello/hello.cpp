@@ -1,8 +1,4 @@
-#include <jni.h>
-#include <string>
-//#include "../other/other.cpp"
-#include "includes/ZhenxiLogging.h"
-#include "ZhenxiLog.h"
+#include "../Utils/mylog.h"
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_thouger_study_MainActivity_copyString(JNIEnv* env, jobject thiz, jstring src) {

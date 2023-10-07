@@ -8,7 +8,7 @@
  * 全局应该只有这一个地方导入dobby.h
  * dobby hook入口
  */
-#include <dobby.h>
+#include "dobby.h"
 /**
  * sandhook里面的inlinehook
  * 异常hook的实现
@@ -29,7 +29,7 @@ static list<void *> *hookedList = nullptr;
  * @param sym  被Hook函数地址
  */
 bool HookUtils::unHook(void *sym) {
-    bool ret = DobbyDestroy(sym) == RT_SUCCESS;
+    bool ret = DobbyDestroy(sym) == 0;
     if(hookedList!= nullptr){
         hookedList->remove(sym);
     }
@@ -56,6 +56,7 @@ bool HookUtils::Hooker(void *dysym, void *newrep, void **org) {
     //如果这个地址已经被Hook了 。也有可能返回失败 。dobby 会提示 already been hooked 。
     for (void *ptr: *hookedList) {
         if (ptr == dysym) {
+            LOG(INFO) << "hook utils hook success !:" << dysym;
             //如果保存了这个地址,说明之前hook成功过,我们也认为hook成功
             return true;
         }
@@ -63,36 +64,35 @@ bool HookUtils::Hooker(void *dysym, void *newrep, void **org) {
 
     bool ret = DobbyHook(dysym,
                          reinterpret_cast<dobby_dummy_func_t>(newrep),
-                         reinterpret_cast<dobby_dummy_func_t *>(org)) == RT_SUCCESS;
+                         reinterpret_cast<dobby_dummy_func_t *>(org)) == 0;
     if (ret) {
-//        LOG(INFO) << "hook utils hook success !:" << dysym;
+        LOG(INFO) << "dobby hook utils hook success !:" << dysym;
         //将地址添加到已经hook的列表,防止这个地址被多次hook
         hookedList->push_back(dysym);
         return true;
     }
 
     //如果dobby hook失败了,采用sandhook异常hook进行补救,
-    LOG(ERROR) << "zhenxi runtime inlinehook start sandhook InlineHookImpl  ";
     ret = SandHook::Inline::InlineHookImpl(dysym, newrep, org);
     if (ret) {
+        LOG(INFO) << "sandhook hook utils hook success !:" << dysym;
         hookedList->push_back(dysym);
         return true;
     }
 
-    LOG(ERROR)
-            << ">>>>>>>>>>>>>>> sandhook inlinehook hook error,start dobby branch_trampoline hook ";
     //如果sandhook sign hook 也失败了,我们采用dobby附近插装去hook
     dobby_enable_near_branch_trampoline();
     //二次hook
     ret = DobbyHook(dysym,
                     reinterpret_cast<dobby_dummy_func_t>(newrep),
-                    reinterpret_cast<dobby_dummy_func_t *>(org)) == RT_SUCCESS;
+                    reinterpret_cast<dobby_dummy_func_t *>(org)) == 0;
     //关闭附近插装
     dobby_disable_near_branch_trampoline();
     if (!ret) {
         LOG(ERROR) << "!!!!!!!!!!!!!!!  HookUtils hook error   ";
         return false;
     }
+    LOG(INFO) << "dobby hook utils hook success !:" << dysym;
     hookedList->push_back(dysym);
     return ret;
 
@@ -150,11 +150,11 @@ bool HookUtils::Hooker(const char *libName, const char *dysym, void *repl, void 
 void hook_function_dobby(void *handle, const char *symbol, void *new_func, void **old_func) {
     void *addr = dlsym(handle, symbol);
     if (addr == nullptr) {
-        LOGE("hook_function_dobby not found symbol : %s", symbol)
+        _LOGE("hook_function_dobby not found symbol : %s", symbol)
         return;
     }
     if (!HookUtils::Hooker(addr, new_func, old_func)) {
-        LOGE(">>>>>>>>>>> io  hook %s fail !", symbol)
+        _LOGE(">>>>>>>>>>> io  hook %s fail !", symbol)
     }
 }
 
@@ -164,7 +164,7 @@ void hook_function_xhook(const char *pathname_regex_str, const char *symbol,
     int result = xhook_register(pathname_regex_str, symbol,
                                 (void*) new_func, (void **) &old_func);
     if (result != 0) {
-        LOGE("android::base::GetProperty failed %d", result);
+        _LOGE("android::base::GetProperty failed %d", result);
     }
     xhook_refresh(0);
 }

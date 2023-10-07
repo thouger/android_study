@@ -42,17 +42,17 @@ ElfImg::ElfImg(std::string_view base_name) : elf(base_name) {
         base = nullptr;
         return;
     }
-//    LOGD("base_name: %s,module base: %p", base_name,base);
+//    _LOGD("base_name: %s,module base: %p", base_name,base);
     //load elf
     int fd = open(elf.data(), O_RDONLY);
     if (fd < 0) {
-        LOGE("failed to open %s", elf.data());
+        _LOGE("failed to open %s", elf.data());
         return;
     }
 
     size = lseek(fd, 0, SEEK_END);
     if (size <= 0) {
-        LOGE("lseek() failed for %s", elf.data());
+        _LOGE("lseek() failed for %s", elf.data());
     }
 
     header = reinterpret_cast<decltype(header)>(mmap(nullptr, size, PROT_READ, MAP_SHARED, fd, 0));
@@ -136,7 +136,7 @@ ElfW(Addr) ElfImg::ElfLookup(std::string_view name, uint32_t hash) const {
 
     for (auto n = bucket_[hash % nbucket_]; n != 0; n = chain_[n]) {
         auto *sym = dynsym_start + n;
-        LOGD("sym->st_name = %s", strings + sym->st_name)
+        _LOGD("sym->st_name = %s", strings + sym->st_name)
         if (name == strings + sym->st_name) {
             return sym->st_value;
         }
@@ -197,7 +197,7 @@ ElfW(Addr) ElfImg::LinearLookup(std::string_view name) const {
 ElfW(Addr) ElfImg::PrefixLookupFirst(std::string_view prefix) const {
     MayInitLinearMap();
     if (auto i = symtabs_.lower_bound(prefix); i != symtabs_.end() && i->first.starts_with(prefix)) {
-//        LOGD("found prefix %s of %s %p in %s in symtab by linear lookup", prefix.data(),
+//        _LOGD("found prefix %s of %s %p in %s in symtab by linear lookup", prefix.data(),
 //             i->first.data(), reinterpret_cast<void *>(i->second->st_value), elf.data());
         return i->second->st_value;
     } else {
@@ -220,15 +220,15 @@ ElfImg::~ElfImg() {
 ElfW(Addr)
 ElfImg::getSymbOffset(std::string_view name, uint32_t gnu_hash, uint32_t elf_hash) const {
     if (auto offset = GnuLookup(name, gnu_hash); offset > 0) {
-//        LOGD("found %s %p in %s in dynsym by gnuhash", name.data(),
+//        _LOGD("found %s %p in %s in dynsym by gnuhash", name.data(),
 //             reinterpret_cast<void *>(offset), elf.data());
         return offset;
     } else if (offset = ElfLookup(name, elf_hash); offset > 0) {
-//        LOGD("found %s %p in %s in dynsym by elfhash", name.data(),
+//        _LOGD("found %s %p in %s in dynsym by elfhash", name.data(),
 //             reinterpret_cast<void *>(offset), elf.data());
         return offset;
     } else if (offset = LinearLookup(name); offset > 0) {
-//        LOGD("found %s %p in %s in symtab by linear lookup", name.data(),
+//        _LOGD("found %s %p in %s in symtab by linear lookup", name.data(),
 //             reinterpret_cast<void *>(offset), elf.data());
         return offset;
     } else {
@@ -252,35 +252,35 @@ bool ElfImg::findModuleBase() {
 
     while ((nread = getline(&buff, &len, maps)) != -1) {
         std::string_view line{buff, static_cast<size_t>(nread)};
-//        LOGD("line: %*s", static_cast<int>(line.size()), line.data());
+//        _LOGD("line: %*s", static_cast<int>(line.size()), line.data());
         if ((contains(line, "r-xp") || contains(line, "r--p")) && contains(line, elf)) {
-            LOGD("found line: %*s", static_cast<int>(line.size()), line.data());
+            _LOGD("found line: %*s", static_cast<int>(line.size()), line.data());
             if (auto begin = line.find_last_of(' '); begin != std::string_view::npos &&
                                                      line[++begin] == '/') {
                 found = true;
                 elf = line.substr(begin);
                 if (elf.back() == '\n') elf.pop_back();
-                //LOGD("update path: %s", elf.data());
+                //_LOGD("update path: %s", elf.data());
                 break;
             }
         }
     }
     if (!found) {
         if (buff) free(buff);
-        LOGE("failed to read load address for %s", elf.data());
+        _LOGE("failed to read load address for %s", elf.data());
         fclose(maps);
         return false;
     }
 
     if (char *next = buff; load_addr = strtoul(buff, &next, 16), next == buff) {
-        LOGE("failed to read load address for %s", elf.data());
+        _LOGE("failed to read load address for %s", elf.data());
     }
 
     if (buff) free(buff);
 
     fclose(maps);
 
-    //LOGD("get module base %s: %lx", elf.data(), load_addr);
+    //_LOGD("get module base %s: %lx", elf.data(), load_addr);
 
     base = reinterpret_cast<void *>(load_addr);
     return true;

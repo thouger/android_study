@@ -42,3 +42,8 @@
 #include "includes/parse.h"
 #include "includes/JnitraceForC.h"
 #include "includes/stringHandler.h"
+#include <hide.h>
+
+#define HOOK_DEF(ret, func, ...) \
+  ret (*orig_##func)(__VA_ARGS__); \
+  ret new_##func(__VA_ARGS__)

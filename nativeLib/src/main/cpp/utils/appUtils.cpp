@@ -27,7 +27,7 @@ void inline findSymBySo(size_t address, mapAddresInfo* info) {
 ZHENXI_RUNTIME_MAPINFO::mapAddresInfo* getSymbolforAddress(size_t address,pid_t pid) {
 
     if (address == 0) {
-        LOGE("getSymbolforAddress  address == null ")
+        _LOGE("getSymbolforAddress  address == null ")
         return nullptr;
     }
     auto* info = (ZHENXI_RUNTIME_MAPINFO::mapAddresInfo*)alloca(sizeof (ZHENXI_RUNTIME_MAPINFO::mapAddresInfo));
@@ -44,7 +44,7 @@ ZHENXI_RUNTIME_MAPINFO::mapAddresInfo* getSymbolforAddress(size_t address,pid_t 
         if (address >= begin && address <= end) {
             info->fname = mapname;
             info->fbase = begin;
-            LOGI("getSymbolforAddress  find so path %s ,start -> %zu end-> %zu  need -> %zu",info->fname,begin,end,address)
+            _LOGI("getSymbolforAddress  find so path %s ,start -> %zu end-> %zu  need -> %zu",info->fname,begin,end,address)
             //获取函数的相对偏移
             info->offset = address-begin;
             //findSymBySo(address,info);
@@ -53,7 +53,7 @@ ZHENXI_RUNTIME_MAPINFO::mapAddresInfo* getSymbolforAddress(size_t address,pid_t 
         }
     }
 
-    LOGI("getSymbolforAddress not found address in maps   0x%zx ", address)
+    _LOGI("getSymbolforAddress not found address in maps   0x%zx ", address)
     //找不到也需要关闭
     syscall(__NR_close, fp);
     return info;
@@ -71,7 +71,7 @@ bool MPROTECT(size_t addr,size_t size,int __prot){
     if (i == 0) {
         return true;
     }
-    LOGE("Helper mprotect error   %s ", strerror(errno))
+    _LOGE("Helper mprotect error   %s ", strerror(errno))
     return false;
 }
 #define BUF_SIZE 1024
@@ -124,7 +124,7 @@ ZHENXI_RUNTIME_MAPINFO::mapItemInfo getSoBaseAddress(const char *name) {
     }
     info.end = end;
     syscall(__NR_close, fp);
-    //LOGE("get maps info start -> 0x%zx  end -> 0x%zx ",info.start,info.end);
+    //_LOGE("get maps info start -> 0x%zx  end -> 0x%zx ",info.start,info.end);
     return info;
 }
 
@@ -137,7 +137,7 @@ void *My_RegisterNative(void *thiz, void *native_method) {
     const string &basicString = org_PrettyMethodSym(thiz, true);
     LOG(ERROR) << ">>>>>>>>>>>>>> native register " << basicString.c_str() << "  " << native_method;
 //    if (strstr(basicString.c_str(), "getHWProperty")) {
-//        LOGE("注册函数打印 %s %p", basicString.c_str(), native_method);
+//        _LOGE("注册函数打印 %s %p", basicString.c_str(), native_method);
 //    }
     return org_RegisterNative(thiz, native_method);
 }

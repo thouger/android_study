@@ -8,6 +8,8 @@ include_directories(
         ./
         ./includes
         ./netlink
+        ./MapHide
+        ./Utils
 
         #导入nativeLib基础库头文件
         ${HomePath}/nativeLib/src/main/cpp/
@@ -37,7 +39,12 @@ add_library(
 #        hook/xhook/xhook.c
 
         SeccompSVC/library.cpp
+        MapHide/hide.cpp
+        MapHide/pmparser.c
+        MapHide/wrap.cpp
 
+        binder_client.c
+        binder.c
         ${syscall}
 )
 

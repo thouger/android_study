@@ -74,7 +74,7 @@ namespace ZhenxiRunTime::stringHandlerHook {
 //                int ret = orig_system_property_get(name, value);
 //                auto strInfo = string("system_properties.Get() arg1 -> ").append(IS_NULL(name)).append(
 //                        "  arg2-> ").append(IS_NULL(value));
-//                LOGD("system_properties.Get() arg1 -> %s  arg2-> %s", name, value)
+//                _LOGD("system_properties.Get() arg1 -> %s  arg2-> %s", name, value)
 //                if (ret != 0) {
 //                    strInfo.append("result -> ").append(IS_NULL(value));
 //                }
@@ -353,7 +353,7 @@ namespace ZhenxiRunTime::stringHandlerHook {
 using namespace ZhenxiRunTime::stringHandlerHook;
 
 void stringHandler::init() {
-    LOGD("stringHandler init");
+    _LOGD("stringHandler init");
 
   //获取system_properties.Get 函数地址
 //  void* system_properties_get=getSymByELF("libc.so", __system_property_get);
@@ -361,7 +361,7 @@ void stringHandler::init() {
 //    LOG(ERROR) << "strhadler get system_properties_get == null   ";
 //    return;
 //  }
-//  LOGD("system_properties_get = %p", system_properties_get);
+//  _LOGD("system_properties_get = %p", system_properties_get);
 
     void *handle = dlopen("libc.so", RTLD_NOW);
 

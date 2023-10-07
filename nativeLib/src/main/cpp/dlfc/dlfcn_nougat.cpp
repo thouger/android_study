@@ -288,8 +288,6 @@ void *fake_dlopen(const char *filename, int flags) {
 
         return fake_dlopen_with_path(filename, flags);
     }
-
-
 }
 
 void *fake_dlsym(void *handle, const char *name) {
