@@ -263,11 +263,11 @@ int xh_elf_check_elfheader(uintptr_t base_addr)
     if(0 != memcmp(ehdr->e_ident, ELFMAG, SELFMAG)) return XH_ERRNO_FORMAT;
 
     //check class (64/32)
-#if defined(__LP64__)
-    if(ELFCLASS64 != ehdr->e_ident[EI_CLASS]) return XH_ERRNO_FORMAT;
-#else
-    if(ELFCLASS32 != ehdr->e_ident[EI_CLASS]) return XH_ERRNO_FORMAT;
-#endif
+    #if defined(__LP64__)
+        if(ELFCLASS64 != ehdr->e_ident[EI_CLASS]) return XH_ERRNO_FORMAT;
+    #else
+        if(ELFCLASS32 != ehdr->e_ident[EI_CLASS]) return XH_ERRNO_FORMAT;
+    #endif
 
     //check endian (little/big)
     if(ELFDATA2LSB != ehdr->e_ident[EI_DATA]) return XH_ERRNO_FORMAT;
