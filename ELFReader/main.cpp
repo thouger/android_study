@@ -1,8 +1,4 @@
-#include <cerrno>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
+#include <inaddr.h>
 #include "elf.h"
 
 #define assert_eq(lhs, rhs, fmt)	assert_op(lhs, rhs, fmt, ==)
@@ -11,49 +7,135 @@
 #define assert_ge(lhs, rhs, fmt)	assert_op(lhs, rhs, fmt, >=)
 
 #define MAX_LEN		60*1024*1024
-u_char buf[MAX_LEN];
+unsigned char buf[MAX_LEN];
 
 const char software_name[] = "ELFReader";
 
-void show_symbol(const u_char *data){
-    u_char *sym_name;
+// todo
+void show_symbol(const unsigned char *data){
+    unsigned char *sym_name;
     int len;
+    elf64_shdr *section_header;
 
     elf64_ehdr *header = (elf64_ehdr *)data;
+    elf64_sym *sym_header;
 
     int shnum = header->e_shnum;
     int e_shoff = header->e_shoff;
-    elf64_shdr *section_header = (elf64_shdr *)(data + e_shoff);
+    section_header = (elf64_shdr*)(data + e_shoff +  sizeof(*section_header) * (header->e_shstrndx ));
 
-    u_char *sec_name = (u_char *)(data + section_header->sh_offset);
+    unsigned char *sec_name = (unsigned char *)(data + section_header->sh_offset);
     for (int i=0;i<shnum;++i){
         section_header = (elf64_shdr*)(data + i * sizeof(*section_header) + e_shoff);
-        if (strcmp(sec_name+section_header->sh_name,".strtab")==0){
-            sym_name = (u_char *)(data + section_header->sh_offset);
+        if (strcmp((const char *)(sec_name + section_header->sh_name), ".strtab") == 0) {
+            sym_name = (unsigned char *)(data + section_header->sh_offset);
         }
     }
 
-    printf("%x\t", section_header->sh_name );
-	printf("%06x\t%06x\n",section_header->sh_addr ,section_header->sh_offset);
-	printf("offset %x\n",section_header->sh_offset );
+    printf("111 %x\n", section_header->sh_name );
+    printf("222 %06x\t%06x\n",section_header->sh_addr ,section_header->sh_offset);
+    printf("333 offset %x\n",section_header->sh_offset );
 
     for (int i=0;i<shnum;++i){
-        section_header = (elf64_shdr)(data + i * sizeof(*section_header) + e_shoff);
-        if (strcmp( sec_name+section_header->sh_name, ".dynsym")== 0){
+        section_header = (elf64_shdr *)(data + i * sizeof(*section_header) + e_shoff);
+        if (strcmp((const char *)(sec_name + (uintptr_t)section_header->sh_name), ".dynsym") == 0) {
             len = (section_header->sh_size / section_header->sh_entsize);
             printf("Symbol table '.dynsym' contains %d entries:\n",len);
-			printf("\t[Nr] \tValue\tSize\tBind\tType\tInfo\tName\n");
+            printf("\t[Nr] \tValue\tSize\tBind\tType\tInfo\tName\n");
+            for (int j = 0;j<len;++j){
+                sym_header = (elf64_sym*)(data+section_header->sh_offset+j*(sizeof (*sym_header)));
+                printf("\t%2d: ",j);
+                printf(" %08x\t",sym_header->st_value );
+                printf("%4d\t",sym_header->st_size );
+
+                switch(ELF64_ST_TYPE(sym_header->st_info)){
+                    case STT_NOTYPE:
+                        printf("NOTYPE\t");
+                        break;
+                    case STT_OBJECT:
+                        printf("OBJECT\t");
+                        break;
+                    case STT_FUNC:
+                        printf("FUNC\t");
+                        break;
+                    case STT_SECTION:
+                        printf("SECTION\t");
+                        break;
+                    case STT_FILE:
+                        printf("FILE\t");
+                        break;
+                    case STT_COMMON:
+                        printf("COMMON\t");
+                        break;
+                    case STT_TLS:
+                        printf("TLS\t");
+                        break;
+                    case STT_NUM:
+                        printf("NUM\t");
+                        break;
+                    case STT_LOOS:
+                        printf("LOOS\t");
+                        break;
+                    case STT_HIOS:
+                        printf("HIOS\t");
+                        break;
+                    case STT_LOPROC:
+                        printf("LOPROC\t");
+                        break;
+                    case STT_HIPROC:
+                        printf("HIPROC\t");
+                        break;
+                    default:
+                        printf("Unknown\t");
+                        break;
+                }
+                switch (ELF64_ST_BIND(sym_header->st_info))
+                {
+                    case STB_LOCAL:
+                        printf("LOCAL\t");
+                        break;
+                    case STB_GLOBAL:
+                        printf("GLOBAL\t");
+                        break;
+                    case STB_WEAK:
+                        printf("WEAK\t");
+                        break;
+                    case STB_NUM:
+                        printf("NUM\t");
+                        break;
+                    case STB_LOOS:
+                        printf("LOOS\t");
+                        break;
+                    case STB_HIOS:
+                        printf("HIOS\t");
+                        break;
+                    case STB_LOPROC:
+                        printf("LOPROC\t");
+                        break;
+                    case STB_HIPROC:
+                        printf("HIPROC\t");
+                        break;
+                    default:
+                        printf("Unknown\t");
+                        break;
+                }
+                printf("\t");
+                char *testss = (char *)(sym_name + sym_header->st_name);
+                printf(" %s\n",sym_name+sym_header->st_name);
+                //symbol table .dynsym
+            }
         }
     }
 }
 
-void show_section_header(const u_char *data){
+void show_section_header(const unsigned char *data){
+    elf64_shdr *section_header;
 
     elf64_ehdr *header = (elf64_ehdr *)data;
     int shnum =  header->e_shnum;
 	int s_off = header->e_shoff;
-    elf64_shdr *section_header = (elf64_shdr*)(data + s_off);
-    u_char *name = (u_char *)(data + section_header->sh_offset);
+    section_header = (elf64_shdr*)(data + s_off +  sizeof(*section_header) * (header->e_shstrndx));
+    unsigned char *name = (unsigned char *)(data + section_header->sh_offset);
 
     printf("Total %d section header, start from address 0x%x:\n\n", shnum,s_off);
     printf("Section header:\n");
@@ -99,6 +181,54 @@ void show_section_header(const u_char *data){
 			case SHT_DYNSYM:
 				printf("%-9s","DYNSYM");
 				break;
+            case SHT_INIT_ARRAY:
+                printf("%-9s","INIT_ARRAY");
+                break;
+            case SHT_FINI_ARRAY:
+                printf("%-9s","FINI_ARRAY");
+                break;
+            case SHT_PREINIT_ARRAY:
+                printf("%-9s","PREINIT_ARRAY");
+                break;
+            case SHT_GROUP:
+                printf("%-9s", "GROUP");
+                break;
+            case SHT_SYMTAB_SHNDX:
+                printf("%-9s", "SYMTAB_SHNDX");
+                break;
+            case SHT_NUM:
+                printf("%-9s", "NUM");
+                break;
+            case SHT_LOOS:
+                printf("%-9s", "LOOS");
+                break;
+            case SHT_GNU_HASH:
+                printf("%-9s", "GNU_HASH");
+                break;
+            case SHT_GNU_LIBLIST:
+                printf("%-9s", "GNU_LIBLIST");
+                break;
+            case SHT_CHECKSUM:
+                printf("%-9s", "CHECKSUM");
+                break;
+            case SHT_LOSUNW:
+                printf("%-9s", "LOSUNW");
+                break;
+            case SHT_SUNW_COMDAT:
+                printf("%-9s", "SUNW_COMDAT");
+                break;
+            case SHT_SUNW_syminfo:
+                printf("%-9s", "SUNW_syminfo");
+                break;
+            case SHT_GNU_verdef:
+                printf("%-9s", "GNU_verdef");
+                break;
+            case SHT_GNU_verneed:
+                printf("%-9s", "GNU_verneed");
+                break;
+            case SHT_GNU_versym:
+                printf("%-9s", "GNU_versym");
+                break;
 			case SHT_LOPROC:
 				printf("%-9s","LOPROC");
 				break;
@@ -153,7 +283,7 @@ void show_section_header(const u_char *data){
     }
 }
 
-void show_program_header(const u_char *data)
+void show_program_header(const unsigned char *data)
 {
     elf64_ehdr *header = (elf64_ehdr *)data;
     // 不能信任header的e_phoff
@@ -285,7 +415,7 @@ void show_program_header(const u_char *data)
     }
 }
 
-void show_header(const u_char *data){
+void show_header(const unsigned char *data){
     elf64_ehdr *header = (elf64_ehdr *)data;
     printf("ELF Header:\n");
 
@@ -326,7 +456,7 @@ void show_header(const u_char *data){
             printf("Unknown file type\n");
             break;
         case ELFCLASS32:
-            printf("ELF32\n");
+            printf("elf64\n");
             break;
         case ELFCLASS64:
             printf("ELF64\n");
@@ -498,7 +628,7 @@ void show_usage()
 		);
 }
 
-void show_all(const u_char *data)
+void show_all(const unsigned char *data)
 {
 	// show_header(data);
 	// printf("\n\n");
@@ -527,7 +657,7 @@ void run(char* argv[]){
             exit(-1);
     }
     // buf不能在这里定义
-    // u_char buf[MAX_LEN];
+    // unsigned char buf[MAX_LEN];
     int len = fread(buf,1,MAX_LEN,elf);
 	buf[len] = '\0';
 
@@ -544,7 +674,8 @@ void run(char* argv[]){
 			show_section_header(buf);
 			break;
 		case 'S':
-			show_symbol(buf);
+//			show_symbol(buf);
+            show_symbol(buf);
 			break;
 		case 'a':
 			show_all(buf);
