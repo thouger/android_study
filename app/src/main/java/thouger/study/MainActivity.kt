@@ -5,12 +5,16 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Process
 import android.util.Log
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import thouger.study.databinding.ActivityMainBinding
+import thouger.study.hunter.XC_MethodHook
+import thouger.study.hunter.XposedBridge
+import thouger.study.hunter.XposedHelpers
 import thouger.study.utils.FileUtils
 import thouger.study.utils.GsonUtils.obj2str
 import thouger.study.utils.ThreadUtils
@@ -20,10 +24,11 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.FileReader
 import java.io.IOException
+import java.lang.reflect.Method
 
 
 class MainActivity : AppCompatActivity() {
-
+    private var binding: ActivityMainBinding? = null
 
     //定义请求码和请求的权限数组
     private val REQUEST_CODE_PERMISSIONS = 100
@@ -86,6 +91,11 @@ class MainActivity : AppCompatActivity() {
 
         //测试native层
         System.loadLibrary("hunter64")
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding!!.getRoot())
+        val tv: TextView = binding!!.sampleText
+        tv.setText(detect_inlineHook())
 //
 //        val list = ArrayList<String>()
 //        list.add("hello.so")
@@ -119,18 +129,20 @@ class MainActivity : AppCompatActivity() {
 
 
         //内存漫游
-//        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
+        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
 
 
 //        test_read_file()
 
         SeccompSVC()
-        test()
+//        test()
     }
+
+    external fun detect_inlineHook(): String
 
     external fun SeccompSVC()
     external fun Analysis(list: ArrayList<*>?, path: String?)
-    external fun test()
+    external fun native_test()
 
     external fun listmacaddrs(): String
 
@@ -141,6 +153,39 @@ class MainActivity : AppCompatActivity() {
     external fun sumArray(array: IntArray?): Int
 
     external fun copyString(str: String?): String?
+
+    fun test() {
+        val clazz = XposedHelpers.findClass("android.os.SystemProperties", classLoader)
+        Log.d("hook_method","target class: " + clazz.name)
+        val className = clazz.name
+        val m: Array<Method> = clazz.getDeclaredMethods()
+        for (method in m) {
+            val classMethodName = method.name
+            Log.d("hook_method","target method: " + method.name)
+            //-----------------重要----------------修改函数名
+            if (!classMethodName.equals("native_get"))
+                continue
+
+            Log.d("hook_method","find method: " + method.name)
+            val output = "类名：$className,方法名：$classMethodName "
+            XposedBridge.hookMethod(method, object : XC_MethodHook() {
+                @Throws(Throwable::class)
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    super.beforeHookedMethod(param)
+                    Log.d("hook_method",output + "done")
+                }
+
+                @Throws(Throwable::class)
+                override fun afterHookedMethod(param: MethodHookParam) {
+                    super.afterHookedMethod(param)
+                    for (i in param.args.indices) {
+                        Log.d("hook_method",output + "参数$i：${param.args[i]}")
+                    }
+                    Log.d("hook_method",output + "afterHookedMethod result: ${param.result}")
+                }
+            })
+        }
+    }
 
     fun testttttttttttt(str: String) {
         Timber.d("testttttttttttt: $str")
@@ -202,7 +247,7 @@ class MainActivity : AppCompatActivity() {
                     FileUtils.saveStringNoClose(context, s1, file)
                 }
             }
-        }, 3 * 1000)
+        }, 10 * 1000)
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

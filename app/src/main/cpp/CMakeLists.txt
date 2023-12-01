@@ -6,6 +6,7 @@ find_library(
 #添加头文件路径位置
 include_directories(
         ./
+        ./dlfcn
         ./includes
         ./netlink
         ./MapHide
@@ -33,6 +34,8 @@ add_library(
 #        mynative.cpp
         hunter.cpp
         IORelocator.cpp
+
+        dlfcn/local_dlfcn.c
 
         netlink/bionic_netlink.cpp
         netlink/ifaddrs.cpp

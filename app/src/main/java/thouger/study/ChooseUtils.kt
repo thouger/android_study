@@ -19,7 +19,7 @@ object ChooseUtils {
     private var getInstancesOfClassesMethod: Method? = null
 
     init {
-        HiddenApiBypass.addHiddenApiExemptions();
+        HiddenApiBypass.addHiddenApiExemptions()
 
         try {
             val c = Class.forName("dalvik.system.VMDebug")

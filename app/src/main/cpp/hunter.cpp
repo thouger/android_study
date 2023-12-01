@@ -8,6 +8,44 @@
 #include "mylibc.h"
 #include "hide.h"
 #include "binder_client.h"
+#include "dlfcn/local_dlfcn.h"
+
+extern "C"
+JNIEXPORT jstring JNICALL detect_inlineHook(JNIEnv *env, jobject type) {
+
+#ifdef __LP64__
+    const char *lib_path = "/system/lib64/libc.so";
+#else
+    const char *lib_path = "/system/lib/libc.so";
+#endif
+#define CMP_COUNT 8
+    const char *sym_name = "open";
+
+    struct local_dlfcn_handle *handle = static_cast<local_dlfcn_handle *>(local_dlopen(lib_path));
+
+    off_t offset = local_dlsym(handle,sym_name);
+
+    FILE *fp = fopen(lib_path,"rb");
+    char file_bytes[CMP_COUNT] = {0};
+    if(fp != NULL){
+        fseek(fp,offset,SEEK_SET);
+        fread(file_bytes,1,CMP_COUNT,fp);
+        fclose(fp);
+    }
+
+    void *dl_handle = dlopen(lib_path,RTLD_NOW);
+    void *sym = dlsym(dl_handle,sym_name);
+
+    int is_hook = memcmp(file_bytes,sym,CMP_COUNT) != 0;
+
+    local_dlclose(handle);
+    dlclose(dl_handle);
+
+    char text[128] = {0};
+    snprintf(text,128,"Function \"%s\" is hook: %s",sym_name,is_hook ? "true" : "false");
+
+    return env->NewStringUTF(text);
+}
 
 void NativeAnalysis(JNIEnv *env, jobject type,jobject filterList,jstring filepath) {
     const auto &clist = parse::jlist2clist(env, filterList);
@@ -16,7 +54,7 @@ void NativeAnalysis(JNIEnv *env, jobject type,jobject filterList,jstring filepat
     //jni hook
     if (filepath != nullptr) {
         path = parse::jstring2str(env, filepath);
-        LOGD("nativeAnalyse open file  %s  ",path.c_str())
+        LOGD("nativeAnalyse open file  %s  ",path.c_str());
         auto *saveOs = new ofstream();
         saveOs->open(path, ios::app);
         if (!saveOs->is_open()) {
@@ -42,14 +80,14 @@ Java_thouger_study_hunter_XposedBridge_hook0(JNIEnv *env,
                                              jobject hooker_object,
                                              jobject originalMethod,
                                              jobject callbackMethod) {
-    LOGD("hunter hook start")
+    LOGD("hunter hook start");
     return lsplant::Hook(env, originalMethod, hooker_object, callbackMethod);
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
 Java_thouger_study_hunter_XposedBridge_unhook0(JNIEnv *env, jclass clazz, jobject originalMethod) {
-    LOGD("hunter unhook start")
+    LOGD("hunter unhook start");
     return lsplant::UnHook(env, originalMethod);
 }
 
@@ -98,7 +136,7 @@ int _ZN16SystemProperties3GetEPKcPc(const char *zhis, char *name,char *value) {
 int (*orig_system_property_read)(const char *zhis,const prop_info* pi, char* name, char* value);
 int system_property_read(const char *zhis,const prop_info* pi, char* name, char* value) {
     int result = orig_system_property_read(zhis,pi,name,value);
-    LOGD("success system_property_read name: %s value: %s",name,value)
+    LOGD("success system_property_read name: %s value: %s",name,value);
     return result;
 }
 
@@ -206,7 +244,8 @@ void test(JNIEnv *env, jobject type) {
 static JNINativeMethod HunterRuntimeNativeMethods[] = {
         {"Analysis", "(Ljava/util/ArrayList;Ljava/lang/String;)V", (void *) NativeAnalysis},
         {"SeccompSVC", "()V", (void *) NativeSeccompSVC},
-        {"test", "()V", (void *) test}
+        {"native_test", "()V", (void *) test},
+        {"detect_inlineHook", "()Ljava/lang/String;", (void *) detect_inlineHook},
 };
 
 bool fileExists(const std::string& filepath) {
@@ -216,39 +255,6 @@ bool fileExists(const std::string& filepath) {
 
 jclass NativiEngineClazz;
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
-    hookProperties();
-    std::vector<std::string> so_list;
-    so_list.emplace_back("libdo64.so");
-//    doMapsHide(false,so_list);
-//    xhook_enable_debug(1);
-//    int result = xhook_register("libc.so","mkdirat",(void*) new_mkdirat, (void **) &orig_mkdirat);
-//    if (result != 0) {
-//        LOGE("android::base::GetProperty failed %d", result);
-//    }
-//    xhook_refresh(1);
-
-//    int rt = execl("/system/xbin/usa", "usa", "-c", "ls /", (char *) 0);
-//    LOGD("execl rt %d",rt)
-    int result = execl("pwd", "pwd", (char *)0);
-
-    main();
-
-    syscall(__NR_openat, AT_FDCWD, "/data/local/tmp/test.txt", O_RDONLY, 0);
-    my_openat(AT_FDCWD, "/data/local/tmp/svc", O_RDONLY, 0);
-    openat(0,"/data/local/tmp/test.txt",O_RDONLY,0);
-
-//    const char *pathname = "/proc/meminfo";
-//    char buf[1024];
-//    int fd = openat(0,pathname,O_RDONLY,0);
-//    int len = read(fd,buf,1024);
-//    buf[len] = '\0';
-//    LOGD("openat read default.prop %s",buf)
-
-    mkdirat(0,"/data/local/tmp/test",0);
-
-    char value[PROP_VALUE_MAX];
-    __system_property_get("ro.product.model", value);
-    LOGD("get ro.product.model value %s",value)
 
     JNIEnv *env;
     vm = _vm;
@@ -264,8 +270,58 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
         return JNI_ERR;
     }
 
-    SandHook::ElfImg art("libart.so");
+    const char* data = "Hello, /dev/null!";
+    int fd = open("/dev/null", O_WRONLY, 0); // 打开 /dev/null
 
+    if (fd != -1) {
+        ssize_t bytes_written = write(fd, data, strlen(data)); // 写入数据
+        close(fd); // 关闭文件描述符
+
+        if (bytes_written == -1) {
+            perror("write to /dev/null failed");
+        } else {
+            printf("Data written to /dev/null successfully.\n");
+        }
+    } else {
+        perror("open /dev/null failed");
+    }
+//    hookProperties();
+//    std::vector<std::string> so_list;
+//    so_list.emplace_back("libdo64.so");
+////    doMapsHide(false,so_list);
+////    xhook_enable_debug(1);
+////    int result = xhook_register("libc.so","mkdirat",(void*) new_mkdirat, (void **) &orig_mkdirat);
+////    if (result != 0) {
+////        LOGE("android::base::GetProperty failed %d", result);
+////    }
+////    xhook_refresh(1);
+//
+////    int rt = execl("/system/xbin/usa", "usa", "-c", "ls /", (char *) 0);
+////    LOGD("execl rt %d",rt)
+//    int result = execl("pwd", "pwd", (char *)0);
+//
+//    main();
+//
+//    syscall(__NR_openat, AT_FDCWD, "/data/local/tmp/test.txt", O_RDONLY, 0);
+//    my_openat(AT_FDCWD, "/data/local/tmp/svc", O_RDONLY, 0);
+//    openat(0,"/data/local/tmp/test.txt",O_RDONLY,0);
+//
+////    const char *pathname = "/proc/meminfo";
+////    char buf[1024];
+////    int fd = openat(0,pathname,O_RDONLY,0);
+////    int len = read(fd,buf,1024);
+////    buf[len] = '\0';
+////    LOGD("openat read default.prop %s",buf)
+//
+//    mkdirat(0,"/data/local/tmp/test",0);
+//
+//    char value[PROP_VALUE_MAX];
+//    __system_property_get("ro.product.model", value);
+//    LOGD("get ro.product.model value %s",value)
+
+//
+    SandHook::ElfImg art("libart.so");
+//
     lsplant::InitInfo initInfo {
             .inline_hooker = inlineHooker,
             .inline_unhooker = inlineUnHooker,
@@ -285,7 +341,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
         return JNI_ERR;
     }
 
-    LOG(INFO) << "mynative JNI_OnLoad init end ,init sucess !   ";
+//    LOG(INFO) << "mynative JNI_OnLoad init end ,init sucess !   ";
 
     return JNI_VERSION_1_6;
 }
