@@ -11,3 +11,4 @@
 11. 隐藏maps
 12. 增加一个binder代理的例子
 13. 增加一个调用dobby.so的例子
+14. 增加一个inlineHook检测例子
