@@ -1,3 +1,5 @@
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
@@ -24,14 +26,12 @@ android {
         ndk {
 //            abiFilters.add("armeabi-v7a")
             abiFilters.add("arm64-v8a")
-//            abiFilters.add("x86")
-//            abiFilters.add("x86_64")
         }
     }
 
     sourceSets {
         getByName("main").apply {
-            jniLibs.srcDirs("src/main/libs")
+            jniLibs.srcDirs("src/libs")
         }
     }
 
@@ -64,6 +64,24 @@ android {
         viewBinding = true
     }
     ndkVersion = "25.2.9519653"
+}
+
+task("buildRust") {
+    val rustAbi = "arm64-v8a"
+
+    doLast {
+        if (System.getProperty("os.name").lowercase(Locale.getDefault()).contains("win")) {
+            project.exec {
+                workingDir = File(project.projectDir, "rs")
+                commandLine("cmd", "/c", "build_rs.bat", rustAbi, "--release")
+            }
+        } else {
+            project.exec {
+                workingDir = File(project.projectDir, "rs")
+                commandLine("sh", "build_rs.sh", rustAbi, "--release")
+            }
+        }
+    }
 }
 
 dependencies {
