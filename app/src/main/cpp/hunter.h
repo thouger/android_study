@@ -1,0 +1,49 @@
+#include <string.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <string>
+#include <map>
+#include <list>
+#include <fstream>
+#include <jni.h>
+#include <dlfcn.h>
+#include <stddef.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <sys/syscall.h>
+#include <cstdio>
+#include <unistd.h>
+#include <stdlib.h>
+#include <syscall.h>
+#include <bits/getopt.h>
+#include <asm/unistd.h>
+#include <asm/fcntl.h>
+#include <bits/getopt.h>
+#include <arpa/inet.h>
+#include <netpacket/packet.h>
+#include <net/ethernet.h>
+#include <istream>
+#include <netinet/in.h>
+#include <net/ethernet.h>
+#include <errno.h>
+#include <netinet/ip.h>
+#include <netdb.h>
+#include <sys/system_properties.h>
+#include "lsplant.hpp"
+#include "Utils/elf_util.h"
+#include "HookUtils.h"
+#include "hook/xhook/include/xhook.h"
+#include "netlink/ifaddrs.h"
+#include "netlink/bionic_netlink.h"
+#include "include/ZhenxiLogging.h"
+#include "include/ZhenxiLog.h"
+#include "include/adapter.h" //vm
+#include "include/parse.h"
+#include "include/JnitraceForC.h"
+#include "include/stringHandler.h"
+#include <hide.h>
+
+#define HOOK_DEF(ret, func, ...) \
+  ret (*orig_##func)(__VA_ARGS__); \
+  ret new_##func(__VA_ARGS__)
