@@ -4,12 +4,17 @@ plugins {
 }
 
 android {
+    lintOptions {
+        disable("ExpiredTargetSdkVersion")
+    }
+
     namespace = "thouger.study"
     compileSdk = 33
 
     defaultConfig {
         applicationId = "thouger.study"
         minSdk = 29
+        //noinspection ExpiredTargetSdkVersion
         targetSdk = 29
         versionCode = 1
         versionName = "1.0"
