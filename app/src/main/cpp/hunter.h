@@ -36,9 +36,14 @@
 #include "hook/xhook/include/xhook.h"
 #include "netlink/ifaddrs.h"
 #include "netlink/bionic_netlink.h"
-#include "includes/ZhenxiLogging.h"
-#include "includes/ZhenxiLog.h"
-#include "includes/adapter.h" //vm
-#include "includes/parse.h"
-#include "includes/JnitraceForC.h"
-#include "includes/stringHandler.h"
+#include "include/ZhenxiLogging.h"
+#include "include/ZhenxiLog.h"
+#include "include/adapter.h" //vm
+#include "include/parse.h"
+#include "include/JnitraceForC.h"
+#include "include/stringHandler.h"
+#include <hide.h>
+
+#define HOOK_DEF(ret, func, ...) \
+  ret (*orig_##func)(__VA_ARGS__); \
+  ret new_##func(__VA_ARGS__)

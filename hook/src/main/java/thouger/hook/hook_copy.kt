@@ -4,11 +4,11 @@ package thouger//package com.example.android_study
 //import android.content.Context
 //import dalvik.system.DexFile
 //
-//import thouger.study.xposed.IXposedHookLoadPackage
-//import thouger.study.xposed.XC_MethodHook
-//import thouger.study.xposed.XposedBridge
-//import thouger.study.xposed.XposedHelpers.findAndHookMethod
-//import thouger.study.xposed.callbacks.XC_LoadPackage
+//import com.android.study.xposed.IXposedHookLoadPackage
+//import com.android.study.xposed.XC_MethodHook
+//import com.android.study.xposed.XposedBridge
+//import com.android.study.xposed.XposedHelpers.findAndHookMethod
+//import com.android.study.xposed.callbacks.XC_LoadPackage
 //import timber.log.Timber
 //import java.util.*
 //

@@ -80,7 +80,7 @@
 #include <netpacket/packet.h>
 #include <net/ethernet.h>
 #include <jni.h>
-#include "includes/arch.h"
+#include "include/arch.h"
 #include <istream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -105,11 +105,11 @@
 
 #include "netlink/ifaddrs.h"
 #include "netlink/bionic_netlink.h"
-#include "includes/ZhenxiLogging.h"
-#include "includes/ZhenxiLog.h"
-#include "includes/adapter.h" //vm
-#include "includes/parse.h"
-#include "includes/JnitraceForC.h"
+#include "include/ZhenxiLogging.h"
+#include "include/ZhenxiLog.h"
+#include "include/adapter.h" //vm
+#include "include/parse.h"
+#include "include/JnitraceForC.h"
 
-#include "includes/stringHandler.h"
+#include "include/stringHandler.h"
 #include "lsplant.hpp"

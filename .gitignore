@@ -1,7 +1,10 @@
-/.idea/
+**/.idea/
 **/build/
 **/.cxx/
 **/armeabi-v7a/
 **/arm64-v8a/
-.gradle/
-local.properties
+**/.vscode
+**/cmake-build-debug
+**/local.properties
+**/.gradle/
+**/target/

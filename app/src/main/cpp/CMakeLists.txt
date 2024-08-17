@@ -6,12 +6,15 @@ find_library(
 #添加头文件路径位置
 include_directories(
         ./
-        ./includes
+        ./dlfcn
+        ./include
         ./netlink
+        ./MapHide
+        ./Utils
 
         #导入nativeLib基础库头文件
         ${HomePath}/nativeLib/src/main/cpp/
-        ${HomePath}/nativeLib/src/main/cpp/includes/
+        ${HomePath}/nativeLib/src/main/cpp/include/
 )
 
 message(STATUS "CMAKE_ANDROID_ARCH_ABI ->   ${CMAKE_ANDROID_ARCH_ABI} ")
@@ -28,14 +31,23 @@ add_library(
 
         SHARED
 
-#        mynative.cpp
+        #        mynative.cpp
         hunter.cpp
         IORelocator.cpp
 
+        dlfcn/local_dlfcn.c
+
         netlink/bionic_netlink.cpp
         netlink/ifaddrs.cpp
-#        hook/xhook/xhook.c
+        #        hook/xhook/xhook.c
 
+        SeccompSVC/library.cpp
+        MapHide/hide.cpp
+        MapHide/pmparser.c
+        MapHide/wrap.cpp
+
+        binder_client.c
+        binder.c
         ${syscall}
 )
 

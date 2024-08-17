@@ -17,10 +17,10 @@
 package thouger.hook;
 
 import android.util.Log;
-import thouger.study.hunter.IXposedHookLoadPackage;
-import thouger.study.hunter.XC_MethodHook;
-import thouger.study.hunter.XposedHelpers;
-import thouger.study.hunter.callbacks.XC_LoadPackage;
+import com.android.study.hunter.IXposedHookLoadPackage;
+import com.android.study.hunter.XC_MethodHook;
+import com.android.study.hunter.XposedHelpers;
+import com.android.study.hunter.callbacks.XC_LoadPackage;
 
 import org.jetbrains.annotations.NotNull;
 

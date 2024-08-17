@@ -5,12 +5,22 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
 
+    repositories {
+        maven {
+            name = "xposed"
+            url = uri("https://api.xposed.info/")
+        }
+    }
+}
 
-rootProject.name = "thouger"
-include(":app", ":nativelib")
+rootProject.name = "android_study"
+include(":app")
 include(":hook")
-include(":nativelib")
-include(":lsposed")
-
-buildCache { local { removeUnusedEntriesAfterDays = 1 } }
+include(":nativeLib")

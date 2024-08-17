@@ -11,11 +11,11 @@ package thouger.hook;//package thouger;
 //import java.util.Arrays;
 //import java.util.Map;
 //
-//import thouger.study.xposed.IXposedHookLoadPackage;
-//import thouger.study.xposed.XC_MethodHook;
-//import thouger.study.xposed.XposedBridge;
-//import thouger.study.xposed.XposedHelpers;
-//import thouger.study.xposed.callbacks.XC_LoadPackage;
+//import com.android.study.xposed.IXposedHookLoadPackage;
+//import com.android.study.xposed.XC_MethodHook;
+//import com.android.study.xposed.XposedBridge;
+//import com.android.study.xposed.XposedHelpers;
+//import com.android.study.xposed.callbacks.XC_LoadPackage;
 //final class AFa1nSDK$30218 {}
 //public class hook_java implements IXposedHookLoadPackage {
 //    //定义包名
