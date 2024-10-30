@@ -2,6 +2,8 @@ package com.android.study
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -114,8 +116,10 @@ class MainActivity : AppCompatActivity() {
 
 
         //内存漫游
-        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
-
+//        getAllObjectInfo(this, File(this.filesDir, "all_object.txt"))
+        val filter = IntentFilter("android.intent.tec.action.sendotherapp")
+        val receiver = MyBroadcastReceiver()
+        this.registerReceiver(receiver, filter)
 
 //        test_read_file()
 

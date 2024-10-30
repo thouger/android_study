@@ -22,5 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "android_study"
 include(":app")
-include(":hook")
+//include(":hook")
 include(":nativeLib")
