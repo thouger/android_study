@@ -1,16 +1,18 @@
-import java.util.Locale
-
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
 }
 
 android {
-    namespace = "com.android.study"
+    lintOptions {
+        disable("ExpiredTargetSdkVersion")
+    }
+
+    namespace = "thouger.study"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.android.study"
+        applicationId = "thouger.study"
         minSdk = 29
         //noinspection ExpiredTargetSdkVersion
         targetSdk = 29
@@ -24,14 +26,16 @@ android {
             }
         }
         ndk {
-//            abiFilters.add("armeabi-v7a")
+            abiFilters.add("armeabi-v7a")
             abiFilters.add("arm64-v8a")
+//            abiFilters.add("x86")
+//            abiFilters.add("x86_64")
         }
     }
 
     sourceSets {
         getByName("main").apply {
-            jniLibs.srcDirs("src/libs")
+            jniLibs.srcDirs("src/main/libs")
         }
     }
 
@@ -66,36 +70,20 @@ android {
     ndkVersion = "25.2.9519653"
 }
 
-task("buildRust") {
-    val rustAbi = "arm64-v8a"
-
-    doLast {
-        if (System.getProperty("os.name").lowercase(Locale.getDefault()).contains("win")) {
-            project.exec {
-                workingDir = File(project.projectDir, "rs")
-                commandLine("cmd", "/c", "build_rs.bat", rustAbi, "--release")
-            }
-        } else {
-            project.exec {
-                workingDir = File(project.projectDir, "rs")
-                commandLine("sh", "build_rs.sh", rustAbi, "--release")
-            }
-        }
-    }
-}
-
 dependencies {
     implementation("org.lsposed.lsplant:lsplant-standalone:5.2")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
-    implementation(project(":nativeLib"))
+
+    implementation(project(":nativelib"))
 
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }
