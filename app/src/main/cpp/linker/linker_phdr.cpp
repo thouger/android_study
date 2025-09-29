@@ -38,7 +38,7 @@
 #include "inttypes.h"
 #include "linker.h"
 #include "log.h"
-#include "../libc/platform/bionic/page.h"
+#include "./page.h"
 #include "linker_utils.h"
 #include "fake_mmap.h"
 // Default PMD size for x86_64 and aarch64 (2MB).

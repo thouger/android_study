@@ -6,11 +6,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.study.utils.FileUtils
+import thouger.study.R
 import com.android.study.utils.GsonUtils.obj2str
 import com.android.study.utils.ThreadUtils
 import timber.log.Timber
@@ -34,7 +37,10 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.BLUETOOTH,
-        Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+        Manifest.permission.POST_NOTIFICATIONS,
+        Manifest.permission.READ_MEDIA_IMAGES,
+        Manifest.permission.READ_MEDIA_VIDEO,
+        Manifest.permission.READ_MEDIA_AUDIO,
     )
 
     fun isSuCommandAvailable(): Boolean {
@@ -56,57 +62,66 @@ class MainActivity : AppCompatActivity() {
         return false // /sbin/su命令不存在
     }
 
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("testUseRust", "getAppSignature: ${useRust().getAppSignature(this)}")
-
-        //测试重定向
-        try {
-            val isSuAvailable = isSuCommandAvailable()
-            println("Is /sbin/su available? $isSuAvailable")
-
-
-            // 打开文件并创建 BufferedReader 对象
-            val reader = BufferedReader(FileReader("/proc/meminfo"))
-
-            // 逐行读取文件内容并打印
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                line?.let { Log.d("111111", it) }
-            }
-
-            // 关闭文件
-            reader.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-//        Timber.plant(Timber.DebugTree())
+//        Log.d("testUseRust", "getAppSignature: ${useRust().getAppSignature(this)}")
 
-//        System.loadLibrary("dobby")
-
-        //输出.so 目录的路径
-        val soPath = applicationInfo.nativeLibraryDir
-        Log.d("NativeLibs", "Native libs path: $soPath")
-        val dir = File(soPath)
-        if (dir.isDirectory) {
-            val files = dir.listFiles()
-            Log.d("NativeLibs", "Files count: " + files!!.size)
-            for (file in files) {
-                if (file.isFile) {
-                    Log.d("NativeLibs", "File name: " + file.name)
-                }
-            }
+        // 检查并请求权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            checkAndRequestLocationPermissions()
         }
 
-//        Timber.d("检测授权")
-        checkAndRequestLocationPermissions()
-
-        //测试native层
-        System.loadLibrary("hunter64")
+//        //测试重定向
+//        try {
+//            val isSuAvailable = isSuCommandAvailable()
+//            println("Is /sbin/su available? $isSuAvailable")
+//
+//
+//            // 打开文件并创建 BufferedReader 对象
+//            val reader = BufferedReader(FileReader("/proc/meminfo"))
+//
+//            // 逐行读取文件内容并打印
+//            var line: String?
+//            while (reader.readLine().also { line = it } != null) {
+//                line?.let { Log.d("111111", it) }
+//            }
+//
+//            // 关闭文件
+//            reader.close()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//
+//        super.onCreate(savedInstanceState)
+////        setContentView(R.layout.activity_main)
+//
+////        Timber.plant(Timber.DebugTree())
+//
+////        System.loadLibrary("dobby")
+//
+//        //输出.so 目录的路径
+//        val soPath = applicationInfo.nativeLibraryDir
+//        Log.d("NativeLibs", "Native libs path: $soPath")
+//        val dir = File(soPath)
+//        if (dir.isDirectory) {
+//            val files = dir.listFiles()
+//            Log.d("NativeLibs", "Files count: " + files!!.size)
+//            for (file in files) {
+//                if (file.isFile) {
+//                    Log.d("NativeLibs", "File name: " + file.name)
+//                }
+//            }
+//        }
+//
+////        Timber.d("检测授权")
+//        checkAndRequestLocationPermissions()
+//
+//        //测试native层
+//        System.loadLibrary("hunter64")
 
 //        Log.d("detect_inlineHook", detect_inlineHook())
 //
@@ -195,9 +210,53 @@ class MainActivity : AppCompatActivity() {
 //        SeccompSVC()
 //        test()
 //        loadSo()
+
+        System.loadLibrary("algorithm")
+
+        setupButtons()
+
         Log.d("MainActivity", "结束")
     }
 
+
+    private fun setupButtons() {
+        val btnFibonacci = findViewById<Button>(R.id.btnFibonacci)
+        val btnPrime = findViewById<Button>(R.id.btnPrime)
+        val btnBoth = findViewById<Button>(R.id.btnBoth)
+        val resultText = findViewById<TextView>(R.id.resultText)
+
+        btnFibonacci.setOnClickListener {
+            Log.d("Algorithm", "Fibonacci button clicked")
+            val result = calculateFibonacci(10)
+            val message = "Fibonacci(10) = $result"
+            resultText.text = message
+            Log.d("Algorithm", message)
+        }
+
+        btnPrime.setOnClickListener {
+            Log.d("Algorithm", "Prime button clicked")
+            val result = isPrime(17)
+            val message = "isPrime(17) = $result"
+            resultText.text = message
+            Log.d("Algorithm", message)
+        }
+
+        btnBoth.setOnClickListener {
+            Log.d("Algorithm", "Both algorithms button clicked")
+            val fibResult = calculateFibonacci(10)
+            val primeResult = isPrime(17)
+
+            // Test Frida GUM example
+            Log.d("FridaGUM", "Running Frida GUM example...")
+            val fridaResult = runFridaGumExample()
+            Log.d("FridaGUM", "Frida GUM example result: $fridaResult")
+
+            val message = "Fibonacci(10) = $fibResult\nisPrime(17) = $primeResult\nFrida GUM result = $fridaResult"
+            resultText.text = message
+            Log.d("Algorithm", "Fibonacci(10) = $fibResult")
+            Log.d("Algorithm", "isPrime(17) = $primeResult")
+        }
+    }
 
     fun m1() {}
     fun m2() {}
@@ -221,6 +280,12 @@ class MainActivity : AppCompatActivity() {
     external fun sumArray(array: IntArray?): Int
 
     external fun copyString(str: String?): String?
+
+    external fun calculateFibonacci(n: Int): Long
+
+    external fun isPrime(number: Int): Boolean
+
+    external fun runFridaGumExample(): Int
 
     fun testttttttttttt(str: String) {
         Timber.d("testttttttttttt: $str")

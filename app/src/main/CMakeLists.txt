@@ -4,6 +4,9 @@ project("thouger")
 #添加内联支持
 enable_language(C ASM)
 
+# 设置Debug模式，生成调试符号
+set(CMAKE_BUILD_TYPE "Debug")
+
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing -std=c++20")
 ##开始优化
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O")
@@ -27,6 +30,8 @@ message(STATUS "HomePath ->   ${HomePath} PROJECT_SOURCE_DIR -> ${PROJECT_SOURCE
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/cpp)
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/cpp/hello)
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/cpp/other)
+ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/cpp/algorithm)
+ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/cpp/frida)
 #基础库组件
 #ADD_SUBDIRECTORY(${HomePath}/nativeLib/src/main/cpp/ nativeLib.out)
 

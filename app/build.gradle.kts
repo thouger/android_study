@@ -9,13 +9,12 @@ android {
     }
 
     namespace = "thouger.study"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "thouger.study"
         minSdk = 29
-        //noinspection ExpiredTargetSdkVersion
-        targetSdk = 29
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -40,6 +39,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Debug 构建配置
+            isDebuggable = true
+            isJniDebuggable = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(

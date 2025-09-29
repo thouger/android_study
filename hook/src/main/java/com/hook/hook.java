@@ -5,11 +5,13 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -22,26 +24,36 @@ public class hook implements IXposedHookLoadPackage {
     private static final String TAG = "XposedModule";
     private static XC_LoadPackage.LoadPackageParam lpparam = null;
 
-    private static Object new_obj = null;
+    private static Context context;
+    private static ClassLoader classLoader;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam _lpparam) throws ClassNotFoundException {
         lpparam = _lpparam;
-        // 过滤不必要的应用
-//        if (!lpparam.packageName.equals(PACKAGE_NAME)) return;
-        // 执行Hook
         hook(lpparam);
     }
 
     private void hook(XC_LoadPackage.LoadPackageParam lpparam) throws ClassNotFoundException {
         Log.d(TAG, "handleLoadPackage: " + lpparam.packageName);
 
+        XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Log.d(TAG, param.thisObject.getClass().getName());
+
+                context = (Context) param.args[0];
+                classLoader = context.getClassLoader();
+
+                setClipboardText(context,"https://detail.tmall.com/item.htm?spm=a21bo.jianhua/a.201876.d9.5af92a89UVNQXw&id=935498097143&xxc=ad_ct&skuId=5826999421165&mi_id=ShfN7fmMUiVlJdyfPXQX-59LnVIIuwsLB7A-X7GJd6fgQrQuNEJzMXG0PrDIPXD48sVR40B2HClzqypF7bOVwBWuqMQ8KHbGyqlk09a6enQ&utparam=%7B%22item_ctr%22%3A0.00338%2C%22x_object_type%22%3A%22p4p_item%22%2C%22item_price%22%3A%2241.9%22%2C%22item_cvr%22%3A0.064683%2C%22pc_scene%22%3A%2220001%22%2C%22aplus_abtest%22%3A%227ad864ee5baa8f23bc7ce002d97de132%22%2C%22tpp_buckets%22%3A%2230986%23449124%230_30986%23520364%2357062_30986%23521582%2357267_30986%23526068%2358189_30986%23524388%2357910%22%2C%22ab_info%22%3A%2230986%23449124%230_30986%23520364%2357062_30986%23521582%2357267_30986%23526068%2358189_30986%23524388%2357910%22%2C%22abid%22%3A%22520364_521582_526068_524388%22%2C%22pc_pvid%22%3A%22015081b6-4997-4440-8a65-983ab08bdec6%22%2C%22mix_group%22%3A%22%22%2C%22item_ecpm%22%3A0.011187%2C%22x_object_id%22%3A935498097143%7D");
+            }
+        });
+
         Class<?> clazz = XposedHelpers.findClass("android.net.Activity", lpparam.classLoader);
 //        Class<?> classs = lpparam.classLoader.loadClass("dalvik.system.DexFile");;
 //        hook_one_method(classs,"attach", Context.class);
 //        hook_all_method(classs,"defineClass");
 
-        hook_all_method(clazz);
+//        hook_all_method(clazz);
     }
 
     private void hook_one_method(Class<?> clazz, String methodName, Object... parameterTypesAndCallback) {
@@ -173,8 +185,6 @@ public class hook implements IXposedHookLoadPackage {
         }
         return field;
     }
-
-
     private Object getFieldValue(Class<?> obj, String fieldName) {
         try {
             Log.d(TAG, "obj is: " + obj);
@@ -185,6 +195,13 @@ public class hook implements IXposedHookLoadPackage {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void setClipboardText(Context context, String text) {
+        Log.d(TAG, "setClipboardText: " + text);
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
     }
     // 第一步：Hook方法ClassLoader#loadClass(String)
 //        findAndHookMethod(ClassLoader.class, "loadClass", String.class, new XC_MethodHook() {
