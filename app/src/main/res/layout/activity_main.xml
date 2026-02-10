@@ -58,6 +58,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/btnFridaGum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:text="Run Frida GUM Hook"
+        android:textSize="16sp"
+        android:backgroundTint="#4CAF50"
+        app:layout_constraintTop_toBottomOf="@id/btnBoth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnJavaCallback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:text="Native Call Java Method"
+        android:textSize="16sp"
+        android:backgroundTint="#9C27B0"
+        app:layout_constraintTop_toBottomOf="@id/btnFridaGum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/resultText"
         android:layout_width="0dp"
@@ -69,7 +97,7 @@
         android:textSize="14sp"
         android:padding="16dp"
         android:background="#F0F0F0"
-        app:layout_constraintTop_toBottomOf="@id/btnBoth"
+        app:layout_constraintTop_toBottomOf="@id/btnJavaCallback"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -49,3 +49,65 @@ Java_com_android_study_MainActivity_runFridaGumExample(JNIEnv *env, jobject thiz
     LOGI("Frida GUM example completed with result: %d", result);
     return (jint)result;
 }
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_android_study_MainActivity_nativeCallJavaMethod(JNIEnv *env, jobject thiz, jstring message) {
+    LOGI("nativeCallJavaMethod called");
+
+    // Convert Java string to C++ string
+    const char *nativeMessage = env->GetStringUTFChars(message, nullptr);
+    if (nativeMessage == nullptr) {
+        LOGI("Failed to get string from Java");
+        return env->NewStringUTF("Error: Failed to get message");
+    }
+
+    LOGI("Received message from Java: %s", nativeMessage);
+
+    // Get the class of the calling object (MainActivity)
+    jclass mainActivityClass = env->GetObjectClass(thiz);
+    if (mainActivityClass == nullptr) {
+        LOGI("Failed to get MainActivity class");
+        env->ReleaseStringUTFChars(message, nativeMessage);
+        return env->NewStringUTF("Error: Failed to get class");
+    }
+
+    // Get the method ID of processMessageFromNative
+    jmethodID processMethod = env->GetMethodID(mainActivityClass,
+                                               "processMessageFromNative",
+                                               "(Ljava/lang/String;)Ljava/lang/String;");
+    if (processMethod == nullptr) {
+        LOGI("Failed to get processMessageFromNative method");
+        env->ReleaseStringUTFChars(message, nativeMessage);
+        return env->NewStringUTF("Error: Failed to get method");
+    }
+
+    // Create a modified message to send to Java
+    std::string modifiedMessage = std::string("[Native Modified] ") + nativeMessage;
+    jstring jModifiedMessage = env->NewStringUTF(modifiedMessage.c_str());
+
+    // Call the Java method
+    LOGI("Calling Java method processMessageFromNative...");
+    jstring result = (jstring)env->CallObjectMethod(thiz, processMethod, jModifiedMessage);
+
+    // Check for exceptions
+    if (env->ExceptionCheck()) {
+        LOGI("Exception occurred while calling Java method");
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        env->ReleaseStringUTFChars(message, nativeMessage);
+        return env->NewStringUTF("Error: Exception in Java method call");
+    }
+
+    // Get the result from Java
+    const char *resultStr = env->GetStringUTFChars(result, nullptr);
+    if (resultStr != nullptr) {
+        LOGI("Got result from Java1111111111: %s", resultStr);
+        env->ReleaseStringUTFChars(result, resultStr);
+    }
+
+    // Clean up
+    env->ReleaseStringUTFChars(message, nativeMessage);
+
+    LOGI("nativeCallJavaMethod completed successfully");
+    return result;
+}

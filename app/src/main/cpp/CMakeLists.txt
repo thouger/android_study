@@ -11,6 +11,7 @@ include_directories(
         ./netlink
         ./MapHide
         ./Utils
+        ./AntiDebug
         ./linker_copy
         ./linker_copy/android-base
         ./linker_copy/dobby
@@ -122,6 +123,11 @@ add_library(
         MapHide/hide.cpp
         MapHide/pmparser.c
         MapHide/wrap.cpp
+
+        # 反调试模块
+        AntiDebug/anti_debug.cpp
+        AntiDebug/anti_debug_jni.cpp
+        AntiDebug/anti_debug_advanced.cpp
 
         binder_client.c
         binder.c

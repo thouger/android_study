@@ -75,7 +75,7 @@ android {
 }
 
 dependencies {
-    implementation("org.lsposed.lsplant:lsplant-standalone:5.2")
+    implementation("org.lsposed.lsplant:lsplant-standalone:6.3")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")

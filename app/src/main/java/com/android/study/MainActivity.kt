@@ -12,11 +12,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.study.douyin.DouyinDeviceRegister
 import com.android.study.utils.FileUtils
 import thouger.study.R
 import com.android.study.utils.GsonUtils.obj2str
 import com.android.study.utils.ThreadUtils
 import timber.log.Timber
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.File
@@ -74,6 +76,8 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             checkAndRequestLocationPermissions()
         }
+
+        DouyinDeviceRegister.collect(this)
 
 //        //测试重定向
 //        try {
@@ -218,11 +222,12 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "结束")
     }
 
-
     private fun setupButtons() {
         val btnFibonacci = findViewById<Button>(R.id.btnFibonacci)
         val btnPrime = findViewById<Button>(R.id.btnPrime)
         val btnBoth = findViewById<Button>(R.id.btnBoth)
+        val btnFridaGum = findViewById<Button>(R.id.btnFridaGum)
+        val btnJavaCallback = findViewById<Button>(R.id.btnJavaCallback)
         val resultText = findViewById<TextView>(R.id.resultText)
 
         btnFibonacci.setOnClickListener {
@@ -245,16 +250,26 @@ class MainActivity : AppCompatActivity() {
             Log.d("Algorithm", "Both algorithms button clicked")
             val fibResult = calculateFibonacci(10)
             val primeResult = isPrime(17)
-
-            // Test Frida GUM example
-            Log.d("FridaGUM", "Running Frida GUM example...")
-            val fridaResult = runFridaGumExample()
-            Log.d("FridaGUM", "Frida GUM example result: $fridaResult")
-
-            val message = "Fibonacci(10) = $fibResult\nisPrime(17) = $primeResult\nFrida GUM result = $fridaResult"
+            val message = "Fibonacci(10) = $fibResult\nisPrime(17) = $primeResult"
             resultText.text = message
             Log.d("Algorithm", "Fibonacci(10) = $fibResult")
             Log.d("Algorithm", "isPrime(17) = $primeResult")
+        }
+
+        btnFridaGum.setOnClickListener {
+            Log.d("FridaGUM", "Frida GUM button clicked")
+            val fridaResult = runFridaGumExample()
+            val message = "Frida GUM Hook Result: $fridaResult"
+            resultText.text = message
+            Log.d("FridaGUM", "Frida GUM example result: $fridaResult")
+        }
+
+        btnJavaCallback.setOnClickListener {
+            Log.d("JavaCallback", "Native call Java button clicked")
+            val result = nativeCallJavaMethod("Hello from Native!")
+            val message = "Native callback result: $result"
+            resultText.text = message
+            Log.d("JavaCallback", message)
         }
     }
 
@@ -286,6 +301,18 @@ class MainActivity : AppCompatActivity() {
     external fun isPrime(number: Int): Boolean
 
     external fun runFridaGumExample(): Int
+
+    // Native 函数：调用 Java 层的方法
+    external fun nativeCallJavaMethod(message: String): String
+
+    // Java 层的自定义函数，供 Native 调用
+    fun processMessageFromNative(message: String): String {
+        Log.d("JavaCallback", "Java method called from native with message: $message")
+        val timestamp = System.currentTimeMillis()
+        val processedMessage = "[Java Processed] $message (timestamp: $timestamp)"
+        Log.d("JavaCallback", "Returning: $processedMessage")
+        return processedMessage
+    }
 
     fun testttttttttttt(str: String) {
         Timber.d("testttttttttttt: $str")
